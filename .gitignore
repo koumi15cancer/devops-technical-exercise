@@ -1,3 +1,9 @@
 /greeter
 app/greeter
 .DS_Store
+
+# Ignore terraform state files
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfplan
