@@ -1,0 +1,14 @@
+groups:
+  - name: greeter
+    rules:
+      - alert: GreeterHighErrorRate
+        expr: |
+          sum(rate(greeter_http_requests_total{status=~"5.."}[1m]))
+          /
+          sum(rate(greeter_http_requests_total[1m]))
+          > 0.05
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: Greeter has a high HTTP 5xx error rate

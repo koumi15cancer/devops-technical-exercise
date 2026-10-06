@@ -1,0 +1,9 @@
+replicaCount: 1
+
+image:
+  repository: prom/prometheus
+  tag: v3.5.0
+  pullPolicy: IfNotPresent
+
+service:
+  port: 9090

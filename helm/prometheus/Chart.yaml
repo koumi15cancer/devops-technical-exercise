@@ -1,0 +1,5 @@
+apiVersion: v2
+name: prometheus
+description: Minimal Prometheus deployment for greeter observability
+type: application
+version: 0.1.0
