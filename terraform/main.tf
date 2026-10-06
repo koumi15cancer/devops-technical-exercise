@@ -18,7 +18,7 @@ resource "helm_release" "greeter" {
   name             = "greeter"
   namespace        = "greeter"
   create_namespace = true
-  upgrade_install = true #Add on considering existing helm release  greeter in namespace greeter in task 3
+  upgrade_install  = true #Add on considering existing helm release  greeter in namespace greeter in task 3
 
   chart = "../helm/greeter"
 
