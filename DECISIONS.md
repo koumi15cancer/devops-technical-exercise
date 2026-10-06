@@ -155,6 +155,23 @@ flexibility.
 My preference for revisiting/ reviewing both decisions if the cluster size, availability
 requirements, or traffic architecture changed.
 
+---
+## Extension order
+
+This is my prioritisation based on operational value versus implementation
+cost.
+
+1. **CI** — validates the core artifacts on every push and gives fast feedback
+   on regressions.
+2. **Observability** — provides visibility into the running service and
+   demonstrates an actionable alert.
+3. **Survival testing** — validates the availability assumptions made in the
+   Kubernetes deployment, particularly pod anti-affinity and graceful
+   shutdown.
+4. **GitOps** — considered valuable for a production workflow, but has the
+   highest setup overhead for this local exercise and the least additional
+   value compared with the other extensions.
+
 
 ## 11. CI Pipeline
 - Added a GitHub Actions pipeline to validate the main artifacts on every push:
@@ -167,3 +184,29 @@ requirements, or traffic architecture changed.
   providing much additional value for this CI.
 ![CI pipeline result](media/ci-pipeline-success.png)
 
+## 12. Observability
+
+- Chose Prometheus because the service already exposes Prometheus metrics.
+- Kept the setup minimal: one Prometheus instance, ConfigMap, Deployment and Service.
+- Used Helm to stay consistent with the Greeter deployment.
+- Kept Prometheus config and alert rules as separate files under
+  `helm/prometheus/config/`.
+
+### Alert
+
+- Alert on HTTP 5xx rate >5% for 30s instead of a single failure.
+- Verified with `/boom`, which intentionally returns HTTP 500.
+
+### Scraping
+
+- Prometheus scrapes the Greeter Service via
+  `greeter.greeter.svc.cluster.local:8080`.
+- This avoids Kubernetes discovery and RBAC complexity for the exercise.
+- Production would scrape individual pods using Kubernetes discovery.
+
+### Limitations
+
+- The error-rate denominator includes health/readiness traffic.
+- Production would define the SLI around user-facing traffic and an agreed SLO.
+- Exclude Grafana, Alertmanager, persistence, HA and long-term
+  storage because they are unnecessary for this exercise.
