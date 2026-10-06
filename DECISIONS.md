@@ -154,3 +154,16 @@ flexibility.
 
 My preference for revisiting/ reviewing both decisions if the cluster size, availability
 requirements, or traffic architecture changed.
+
+
+## 11. CI Pipeline
+- Added a GitHub Actions pipeline to validate the main artifacts on every push:
+  Go tests, Docker build, Helm lint/template, and Terraform format/validation.
+- Choosing validation over deploying the local kind cluster in CI. The Terraform
+  deployment depends on the local `kind-what3words` cluster and kubeconfig,
+  which are not available on a clean GitHub Actions runner.
+- Considering creating a kind cluster in CI to run `terraform plan`, but
+  rejected it because it would add significant setup complexity without
+  providing much additional value for this CI.
+
+
