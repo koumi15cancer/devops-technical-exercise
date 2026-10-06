@@ -26,10 +26,10 @@ kubectl drain "$NODE" \
     --ignore-daemonsets \
     --delete-emptydir-data
 
-echo "Wait for replacement pod"
-kubectl rollout status deployment/greeter \
-    -n "$NAMESPACE" \
-    --timeout=120s
+echo "Pods during drain"
+kubectl get pods -n "$NAMESPACE" -o wide
+
+sleep 10
 
 echo "Pods after drain"
 kubectl get pods -n "$NAMESPACE" -o wide
