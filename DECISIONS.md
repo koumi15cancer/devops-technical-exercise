@@ -15,9 +15,9 @@ the production configuration has three replicas and want to demonstrate
 one replica per worker.
 - Using hard pod anti-affinity so replicas are not placed on the same node.
 Trade-off is that hard anti-affinity makes scheduling more constrained.
-If there are not enough suitable nodes, a pod remains Pending instead of being
+    - If there are not enough suitable nodes, a pod remains Pending instead of being
 co-located with another replica.
-For this approach prefer predictable failure isolation over easier scheduling,
+    - For this approach prefer predictable failure isolation over easier scheduling,
 this also means a new deployment cannot simply place multiple replicas on the same
 node when another suitable node is unavailable,reduce risk disrupt current traffic.
 
@@ -37,7 +37,7 @@ that was not necessary for this small deployment. More complex and debug stuff f
 ## 4. Service exposure
 - Using a NodePort with kind port mapping because the service must be reachable
 from outside the cluster and everything runs locally.
-My experience with assign port between local cluster with docker on machine not well so try to keep in control than reproducing network layer here to achieve purpose.
+    - My experience with assign port between local cluster with docker on machine not well so try to keep in control than reproducing network layer here to achieve purpose.
 - Put consideration with Ingress, but rejected it because it would introduce another
 component without adding value for this exercise.
 - One limitation is that the kind host port is mapped through one node. If that
@@ -46,7 +46,7 @@ longer reachable even though Kubernetes could still have healthy replicas on
 other nodes.
 - For a production cluster would use a load balancer or ingress instead.
 Usually that also introducing other factors:
-Consider TLS/mTLS, certificate management, authentication, and the trust boundary between external
+    - Consider TLS/mTLS, certificate management, authentication, and the trust boundary between external
 clients and services stuff.
 
 ## 5. Health checks and shutdown
