@@ -68,6 +68,34 @@ curl http://localhost:30080/
 The script continuously sends requests while draining one worker and verifies
 that Kubernetes replaces the evicted replica.
 
+By oder:
+1. Starts continuous HTTP requests.
+2. Drains one worker node.
+3. Shows the pod state during the drain.
+4. Restores the worker with kubectl uncordon.
+5. Waits for all replicas to recover.
+
+If you want the evidence links to follow the **test order**, use the image names like this:
+
+**Evidence:**
+
+1. Requests and node drain
+
+   ![Requests and node drain](../media/node-drain-start.png)
+
+2. Pods during drain
+
+   ![Pods during drain](../media/pods-during-drain.png)
+
+3. Worker restored
+
+   ![Worker restored](../media/worker-restore.png)
+
+4. Final recovered state
+
+   ![Final recovered state](../media/recover-state.png)
+
+
 ## 7. Cleanup
 
 ```bash
@@ -78,3 +106,5 @@ that Kubernetes replaces the evicted replica.
 - NodePort 30080: simple external access from the local kind cluster.
 - 3 workers + 3 replicas: allows one replica per worker with hard pod anti-affinity, so losing one worker  not take down the service.
 - Node drain: when a worker is unavailable, pod is evicted and kubernetes recreates it on another available worker. During the drain, existing replicas continue serving traffic.
+
+

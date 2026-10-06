@@ -210,3 +210,10 @@ cost.
 - Production would define the SLI around user-facing traffic and an agreed SLO.
 - Exclude Grafana, Alertmanager, persistence, HA and long-term
   storage because they are unnecessary for this exercise.
+
+## 13. Proves it survives
+- Reference to section 6 under docs/task-3-note.md
+
+
+## 14. Other left
+- Considering Gitops complex and having no time so i skip it
