@@ -165,5 +165,5 @@ requirements, or traffic architecture changed.
 - Considering creating a kind cluster in CI to run `terraform plan`, but
   rejected it because it would add significant setup complexity without
   providing much additional value for this CI.
-
+![CI pipeline result](media/ci-pipeline-success.png)
 
