@@ -17,7 +17,7 @@ echo "Start request loop"
 ) &
 LOAD_PID=$!
 
-trap 'kill "$LOAD_PID" 2>/dev/null || true' EXIT
+trap 'kubectl uncordon "$NODE" >/dev/null 2>&1 || true; kill "$LOAD_PID" 2>/dev/null || true' EXIT
 
 sleep 3
 
