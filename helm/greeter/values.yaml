@@ -1,0 +1,19 @@
+replicaCount: 2
+
+image:
+  repository: greeter
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30080
+
+greetingName: "Development"
+version: "dev"
+
+warmupSeconds: 30
+shutdownDelaySeconds: 10
+drainTimeoutSeconds: 20
+terminationGracePeriodSeconds: 35 #drain 20s + shutdown delay 10s + buffer 5s here

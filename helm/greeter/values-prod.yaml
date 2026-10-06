@@ -1,0 +1,4 @@
+replicaCount: 3
+
+greetingName: "Production"
+version: "prod"

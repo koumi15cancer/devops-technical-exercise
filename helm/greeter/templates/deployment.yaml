@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Release.Name }}
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  selector:
+    matchLabels:
+      app: greeter
+
+  template:
+    metadata:
+      labels:
+        app: greeter
+
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: greeter
+              topologyKey: kubernetes.io/hostname
+
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+
+      containers:
+        - name: greeter
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+
+          env:
+            - name: GREETING_NAME
+              value: {{ .Values.greetingName | quote }}
+
+            - name: VERSION
+              value: {{ .Values.version | quote }}
+
+            - name: WARMUP_SECONDS
+              value: {{ .Values.warmupSeconds | quote }}
+
+            - name: SHUTDOWN_DELAY_SECONDS
+              value: {{ .Values.shutdownDelaySeconds | quote }}
+
+            - name: DRAIN_TIMEOUT_SECONDS
+              value: {{ .Values.drainTimeoutSeconds | quote }}
+
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+            failureThreshold: 12
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 2
